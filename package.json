@@ -1,0 +1,25 @@
+{
+	"name": "ghosthackzapi",
+	"version": "1.0.0",
+	"description": "API used by GhostHackz's sites.",
+	"main": "index.js",
+	"scripts": {
+		"start": "node index.js"
+	},
+	"dependencies": {
+		"express": "4.16.2"
+	},
+	"engines": {
+		"node": "9.5.0"
+	},
+	"reposiitory": {
+		"type": "git",
+		"url": "https://github.com/GhostHackz861/ghosthackzapi"
+	},
+	"keywords": [
+		"ghosthackz",
+		"ssl"
+	],
+	"author": "GhostHackz <admin@ghosthackz.ml> (https://ghosthackz.ml)",
+	"license": "MIT"
+}
