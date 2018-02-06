@@ -149,7 +149,7 @@ service.post("/wifishare/v1/sign", function(request, response) {
 	
 	getSignedConfig(options, function(error, data) {
 		const uuidConst = uuid.v4();
-		branch.write("cluster1/sector1/" + uuidConst + ".mobileconfig", data, "Config Added!", false).done(function() {
+		branch.write("cluster1/sector1/" + uuidConst + ".mobileconfig", data, "Config Added!", true).done(function() {
 			console.log("Config Uploaded!")
 		});
 		const fileUrl = "https://raw.githubusercontent.com/" + request.body.GH_USERNAME + "/" + request.body.GH_REPO + "/master/cluster1/sector1/" + uuidConst + ".mobileconfig";
