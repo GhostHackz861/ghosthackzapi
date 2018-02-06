@@ -1,24 +1,32 @@
 {
-	"name": "ghosthackzapi",
+	"name": "wifishareapi",
 	"version": "1.0.0",
-	"description": "API used by GhostHackz's sites.",
-	"main": "index.js",
+	"description": "The official API for Wi-FiShare.",
+	"main": "app.js",
 	"scripts": {
-		"start": "node index.js"
+		"start": "node app.js"
 	},
 	"dependencies": {
-		"express": "4.16.2"
+		"express": "4.16.2",
+		"cookie-parser": "1.4.3",
+		"handlebars": "4.0.11",
+		"jsrsasign": "8.0.5",
+		"uuid": "3.2.1",
+		"ua-parser": "0.3.5",
+		"helmet": "3.10.0"
 	},
 	"engines": {
 		"node": "9.5.0"
 	},
 	"reposiitory": {
 		"type": "git",
-		"url": "https://github.com/GhostHackz861/ghosthackzapi"
+		"url": "https://github.com/GhostHackz861/wifishareapi"
 	},
 	"keywords": [
-		"ghosthackz",
-		"ssl"
+		"mobileconfig",
+		"sign",
+		"ssl",
+		"wifishare"
 	],
 	"author": "GhostHackz <admin@ghosthackz.ml> (https://ghosthackz.ml)",
 	"license": "MIT"
