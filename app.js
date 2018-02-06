@@ -28,7 +28,7 @@ service.use(cookieParser("wifiXshareXapi024520162XYZ"));
 service.use(bodyParser.json())
 service.use(bodyParser.urlencoded({ extended: true }));
 
-var gh = new Github({
+var gh = Github.new({
 	username: process.env.GH_USERNAME,
 	password: process.env.GH_PASSWORD
 });
