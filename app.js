@@ -7,7 +7,7 @@ const handlebars = require("handlebars");
 const jsrsasign = require("jsrsasign");
 const uuid = require("uuid");
 const fs = require("fs");
-const github = require("octonode");
+const GitHub = require("github-api");
 const GoogleUrl = require("google-url");
 const gUrl = new GoogleUrl();
 const service = express();
@@ -28,8 +28,10 @@ service.use(cookieParser("wifiXshareXapi024520162XYZ"));
 service.use(bodyParser.json())
 service.use(bodyParser.urlencoded({ extended: true }));
 
-var client = github.client(process.env.GH_TOKEN);
-var ghrepo = client.repo(process.env.GH_USERNAME + "/" + process.env.GH_REPO);
+var gh = new GitHub({
+	token: process.env.GH_TOKEN
+});
+var repo = gh.getRepo(process.env.GH_USERNAME, process.env.GH_REPO);
 
 const templates = {
 	config: handlebars.compile(fs.readFileSync("./config.plist", "utf-8"))
@@ -144,7 +146,14 @@ service.post("/wifishare/v1/sign", function(request, response) {
 	
 	getSignedConfig(options, function(error, data) {
 		const uuidConst = uuid.v4();
-		ghrepo.createContents("cluster1/sector1/" + uuidConst + ".mobileconfig", "Added Config!", data);
+		var options = {
+			encode: false
+		};
+		repo.writeFile("master", "cluster1/sector1/" + uuidConst + ".mobileconfig", data, "Added Config!", options, function(error, result, response) {
+			if (error) {
+				console.log(error);
+			}
+		});
 		const fileUrl = "https://raw.githubusercontent.com/" + request.body.GH_USERNAME + "/" + request.body.GH_REPO + "/master/cluster1/sector1/" + uuidConst + ".mobileconfig";
 		gUrl.shorten(fileUrl, function(error, shortUrl) {
 			response.send(JSON.stringify({
