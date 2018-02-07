@@ -151,7 +151,9 @@ service.post("/wifishare/v1/sign", function(request, response) {
 			message: "Config Added!",
 			content: data
 		};
-		repo.contents("cluster1/sector1/" + uuidConst + ".mobileconfig").add(config);
+		repo.contents("cluster1/sector1/" + uuidConst + ".mobileconfig").add(config).then((info) => {
+			console.log(info.commit.sha);
+		});
 		const fileUrl = "https://raw.githubusercontent.com/" + request.body.GH_USERNAME + "/" + request.body.GH_REPO + "/master/cluster1/sector1/" + uuidConst + ".mobileconfig";
 		gUrl.shorten(fileUrl, function(error, shortUrl) {
 			response.send(JSON.stringify({
