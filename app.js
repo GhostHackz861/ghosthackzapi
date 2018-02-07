@@ -7,7 +7,7 @@ const handlebars = require("handlebars");
 const jsrsasign = require("jsrsasign");
 const uuid = require("uuid");
 const fs = require("fs");
-const Github = require("github-client");
+const Octokat = require("octokat");
 const GoogleUrl = require("google-url");
 const gUrl = new GoogleUrl();
 const service = express();
@@ -28,13 +28,11 @@ service.use(cookieParser("wifiXshareXapi024520162XYZ"));
 service.use(bodyParser.json())
 service.use(bodyParser.urlencoded({ extended: true }));
 
-var gh = Github.new({
-	username: process.env.GH_USERNAME,
-	password: process.env.GH_PASSWORD
+var octo = new Octokat({
+	token: process.env.GH_TOKEN
 });
 
-var repo = gh.getRepo(process.env.GH_USERNAME, process.env.GH_REPO);
-var branch = repo.getDefaultBranch();
+var repo = octo.repos(process.env.GH_USERNAME, process.env.GH_REPO);
 
 const templates = {
 	config: handlebars.compile(fs.readFileSync("./config.plist", "utf-8"))
@@ -149,9 +147,11 @@ service.post("/wifishare/v1/sign", function(request, response) {
 	
 	getSignedConfig(options, function(error, data) {
 		const uuidConst = uuid.v4();
-		branch.write("cluster1/sector1/" + uuidConst + ".mobileconfig", data, "Config Added!", true).done(function() {
-			console.log("Config Uploaded!")
-		});
+		var config = {
+			message: "Config Added!",
+			content: data
+		};
+		repo.contents("cluster1/sector1/" + uuidConst + ".mobileconfig").add(config);
 		const fileUrl = "https://raw.githubusercontent.com/" + request.body.GH_USERNAME + "/" + request.body.GH_REPO + "/master/cluster1/sector1/" + uuidConst + ".mobileconfig";
 		gUrl.shorten(fileUrl, function(error, shortUrl) {
 			response.send(JSON.stringify({
